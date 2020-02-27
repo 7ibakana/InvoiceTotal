@@ -56,13 +56,25 @@ namespace InvoiceTotal
         public bool IsValidData() //validates data
         {
             return
-                IsPresent(txtSubtotal, "Subtotal");
+                IsPresent(txtSubtotal, "Subtotal") &&
+                IsWithinRange(txtSubtotal, "Subtotal", 0, 10000);
         }
         public bool IsPresent(TextBox textBox, string name) //validates the error that will show up with subtotal field is not present
         {
             if (textBox.Text == "")
             {
                 MessageBox.Show(name + " is a required field.", "Entry Error");
+                textBox.Focus();
+                return false;
+            }
+            return true;
+        }
+        public bool IsWithinRange(TextBox textBox, string name, decimal min, decimal max) //Validation for a range of numbers
+        {
+            decimal number = Convert.ToDecimal(textBox.Text);
+            if (number < min || number > max)
+            {
+                MessageBox.Show(name + " must be between " + min + " and " + max + ".", "Entry Error");
                 textBox.Focus();
                 return false;
             }
